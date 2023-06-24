@@ -18,7 +18,7 @@ const app = express();
 
 //! implememts ejs to server.js
 app.set('view engine', 'ejs');
-//! default view path
+//! directly connects to the view folder
 app.set('views', path.join(__dirname, 'views'));
 
 //! renders the page on views
@@ -26,13 +26,9 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-app.get('/makecamp', async (req, res) => {
-  const camp = new Campground({
-    title: 'my backyard',
-    description: 'cheap',
-  });
-  await camp.save();
-  res.send(camp);
+app.get('/allcamps', async (req, res) => {
+  const camp = await Campground.find({});
+  res.render('campgrounds/index');
 });
 
 app.listen(3000, () => {
