@@ -23,6 +23,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 //! to parse body from req
 app.use(express.urlencoded({ extended: true }));
+//! used to override patch and delete as post
 app.use(methodOverride('_method'));
 
 //! renders the page on views
