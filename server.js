@@ -82,7 +82,7 @@ app.get(
 );
 
 //! updates camp by id
-//! can also used put
+//! can also used patch
 app.put(
   '/campgrounds/:id',
   catchAsync(async (req, res) => {
