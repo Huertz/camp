@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const Joi = require('joi');
+const { campgroundSchema } = require('./schemas.js');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
@@ -36,6 +36,17 @@ app.use(express.urlencoded({ extended: true }));
 //! used to override patch and delete as post
 app.use(methodOverride('_method'));
 
+//! middlewere/backend validatation
+const validateCampground = (req, res, next) => {
+  const { error } = campgroundSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',');
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
 //! renders the page on views
 app.get('/', (req, res) => {
   res.render('home');
@@ -56,6 +67,7 @@ app.get('/campgrounds/new', (req, res) => {
 //! creates campground
 app.post(
   '/campgrounds',
+  validateCampground,
   catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
@@ -86,6 +98,7 @@ app.get(
 //! can also used patch
 app.put(
   '/campgrounds/:id',
+  validateCampground,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, {
