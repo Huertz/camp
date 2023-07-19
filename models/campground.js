@@ -8,7 +8,7 @@ const CampSchema = new Schema({
   price: Number,
   description: String,
   location: String,
-  //! ref if from the review model
+  //? ref if from the review model
   reviews: [
     {
       type: Schema.Types.ObjectId,
