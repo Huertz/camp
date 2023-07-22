@@ -147,6 +147,7 @@ app.post(
   })
 );
 
+//? deletes reviews
 app.delete(
   '/campgrounds/:id/reviews/:reviewId',
   catchAsync(async (req, res) => {
