@@ -73,6 +73,7 @@ router.put(
       ...req.body.campground,
     });
     //! redirect mostly used in POST
+    req.flash('success', 'Succefuly updated a campground');
     res.redirect(`/campgrounds/${campground._id}`);
   })
 );
@@ -83,6 +84,7 @@ router.delete(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
+    req.flash('error', 'Campground deleted');
     res.redirect('/campgrounds');
   })
 );
