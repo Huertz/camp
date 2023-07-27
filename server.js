@@ -36,6 +36,9 @@ app.use(express.urlencoded({ extended: true }));
 //! used to override patch and delete as post
 app.use(methodOverride('_method'));
 
+//! directrly connects to the public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/campgrounds', campgrounds);
 app.use('/campgrounds/:id/reviews', reviews);
 
