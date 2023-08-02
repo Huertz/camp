@@ -12,9 +12,9 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
 //! express sessions
-
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+const campgroundsRoutes = require('./routes/campgrounds');
+const reviewsRoutes = require('./routes/reviews');
 
 mongoose.connect('mongodb://localhost:27017/camp', {
   useNewUrlParser: true,
@@ -67,20 +67,15 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use('/fakeUser', async (req, res) => {
-  const user = new User({ email: 'josehuerta@gmail.com', username: 'huertz' });
-  const newUser = await User.register(user, 'pass');
-  res.send(newUser);
-});
-
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
 });
 
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews);
+app.use('/', userRoutes);
+app.use('/campgrounds', campgroundsRoutes);
+app.use('/campgrounds/:id/reviews', reviewsRoutes);
 
 //! renders the page on views
 app.get('/', (req, res) => {
