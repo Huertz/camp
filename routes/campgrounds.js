@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const { campgroundSchema } = require('../schemas.js');
+const { isLoggedIn } = require('../middleware/middleware');
 
 const ExpressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
@@ -24,7 +25,7 @@ router.get('/', async (req, res) => {
 });
 
 //! order does matter
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
   res.render('campgrounds/new');
 });
 
@@ -32,6 +33,7 @@ router.get('/new', (req, res) => {
 //! creates campground
 router.post(
   '/',
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
@@ -45,6 +47,7 @@ router.post(
 //! camp by id
 router.get(
   '/:id',
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate(
       'reviews'
