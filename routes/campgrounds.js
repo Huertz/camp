@@ -77,6 +77,7 @@ router.get(
 //! can also used patch
 router.put(
   '/:id',
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res) => {
     const { id } = req.params;
@@ -92,6 +93,7 @@ router.put(
 //! deletes camp by id for now..
 router.delete(
   '/:id',
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
