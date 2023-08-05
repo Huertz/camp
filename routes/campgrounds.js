@@ -47,7 +47,6 @@ router.post(
 //! camp by id
 router.get(
   '/:id',
-  isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate(
       'reviews'
@@ -63,6 +62,7 @@ router.get(
 //! edit camp by id
 router.get(
   '/:id/edit',
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     if (!campground) {
