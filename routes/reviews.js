@@ -1,28 +1,13 @@
 const express = require('express');
 //? helps merge params
 const router = express.Router({ mergeParams: true });
-
+const { validateReview } = require('../middleware/middleware');
 //? utils
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
-
 //? schema setup
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-
-//? JOI back-end validation
-const { reviewSchema } = require('../schemas.js');
-
-//? middleware/backend validation for reviews
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(',');
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
 
 //? creates review in campground
 router.post(
