@@ -75,7 +75,7 @@
           By <%= review.author.username%>
         </h5>
         <p class="card-text">Review: <%= review.body%></p>
-        <% if(user) {%>
+        <% if(user && review.author.equals(user._id) ) {%>
         <form
           action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
           method="POST"
