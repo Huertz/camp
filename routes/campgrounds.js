@@ -11,6 +11,7 @@ const {
 
 const Campground = require('../models/campground');
 
+//? there other way to restructure routes
 //! show a campgrounds
 router.get('/', catchAsync(campgrounds.index));
 
