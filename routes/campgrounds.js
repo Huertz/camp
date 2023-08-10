@@ -54,11 +54,14 @@ router.delete('/:id', isLoggedIn, catchAsync(campgrounds.deleteCampground));
 // router
 //   .route('/')
 //   .get(catchAsync(campgrounds.index))
-//   .post(
-//     isLoggedIn,
-//     validateCampground,
-//     catchAsync(campgrounds.createCampground)
-//   );
+//   .post((req, res) => {
+//     res.send(req.body);
+//   });
+// .post(
+//   isLoggedIn,
+//   validateCampground,
+//   catchAsync(campgrounds.createCampground)
+// );
 
 // router.get('/new', isLoggedIn, campgrounds.renderNewForm);
 
