@@ -3,14 +3,19 @@ const Review = require('./review');
 const Schema = mongoose.Schema;
 
 //! schema
+const ImageSchema = new Schema({
+  url: String,
+  filename: String,
+});
+
+//! to reduce images to thumbnails
+ImageSchema.virtual('small').get(function () {
+  return this.url.replace('/upload', '/upload/w_200');
+});
+
 const CampSchema = new Schema({
   title: String,
-  images: [
-    {
-      url: String,
-      filename: String,
-    },
-  ],
+  images: [ImageSchema],
   price: Number,
   description: String,
   location: String,
