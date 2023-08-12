@@ -17,19 +17,20 @@ const Campground = require('../models/campground');
 
 //? there other way to restructure routes
 //! show a campgrounds
-// router.get('/', catchAsync(campgrounds.index));
+router.get('/', catchAsync(campgrounds.index));
 
 //! order does matter
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);
 
 //? old way of implementing erros
 // //! creates campground
-// router.post(
-//   '/',
-//   isLoggedIn,
-//   validateCampground,
-//   catchAsync(campgrounds.createCampground)
-// );
+router.post(
+  '/',
+  isLoggedIn,
+  upload.array('image'),
+  // validateCampground,
+  catchAsync(campgrounds.createCampground)
+);
 
 //! camp by id
 router.get('/:id', catchAsync(campgrounds.showCampground));
@@ -55,13 +56,13 @@ router.put(
 router.delete('/:id', isLoggedIn, catchAsync(campgrounds.deleteCampground));
 
 //? fancy way to restructure routes
-router
-  .route('/')
-  .get(catchAsync(campgrounds.index))
-  .post(upload.single('image'), (req, res) => {
-    console.log(req.file, req.body);
-    res.send('Works');
-  });
+// router
+//   .route('/')
+//   .get(catchAsync(campgrounds.index))
+//   .post(upload.array('image'), (req, res) => {
+//     console.log(req.body, req.files);
+//     res.send('Works');
+//   });
 // .post(
 //   isLoggedIn,
 //   validateCampground,
