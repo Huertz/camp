@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const campgrounds = require('../controllers/campgrounds');
 const catchAsync = require('../utils/catchAsync');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const {
   isLoggedIn,
@@ -13,19 +15,19 @@ const Campground = require('../models/campground');
 
 //? there other way to restructure routes
 //! show a campgrounds
-router.get('/', catchAsync(campgrounds.index));
+// router.get('/', catchAsync(campgrounds.index));
 
 //! order does matter
 router.get('/new', isLoggedIn, campgrounds.renderNewForm);
 
 //? old way of implementing erros
-//! creates campground
-router.post(
-  '/',
-  isLoggedIn,
-  validateCampground,
-  catchAsync(campgrounds.createCampground)
-);
+// //! creates campground
+// router.post(
+//   '/',
+//   isLoggedIn,
+//   validateCampground,
+//   catchAsync(campgrounds.createCampground)
+// );
 
 //! camp by id
 router.get('/:id', catchAsync(campgrounds.showCampground));
@@ -51,12 +53,13 @@ router.put(
 router.delete('/:id', isLoggedIn, catchAsync(campgrounds.deleteCampground));
 
 //? fancy way to restructure routes
-// router
-//   .route('/')
-//   .get(catchAsync(campgrounds.index))
-//   .post((req, res) => {
-//     res.send(req.body);
-//   });
+router
+  .route('/')
+  .get(catchAsync(campgrounds.index))
+  .post(upload.single('image'), (req, res) => {
+    res.send(req.body);
+    console.log(req.file, req.body);
+  });
 // .post(
 //   isLoggedIn,
 //   validateCampground,
