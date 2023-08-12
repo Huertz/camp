@@ -11,8 +11,11 @@ cloudinary.config({
 //! secound step
 const storage = new CloudinaryStorage({
   cloudinary,
-  folder: 'Camps',
-  allowedFormats: ['jpeg', 'png', 'jpg'],
+  //! helps to send files in cloudinary to a specific folder
+  params: {
+    folder: 'Camps',
+    allowedFormats: ['jpeg', 'png', 'jpg'],
+  },
 });
 
 module.exports = {

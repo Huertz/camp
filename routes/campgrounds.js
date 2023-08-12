@@ -59,8 +59,8 @@ router
   .route('/')
   .get(catchAsync(campgrounds.index))
   .post(upload.single('image'), (req, res) => {
-    res.send(req.body);
     console.log(req.file, req.body);
+    res.send('Works');
   });
 // .post(
 //   isLoggedIn,
