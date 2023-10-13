@@ -18,12 +18,11 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createCampground = async (req, res, next) => {
   const geoData = await geocoder
     .forwardGeocode({
-      query: 'Yosamite, CA',
+      query: req.body.campground.location,
       limit: 1,
     })
     .send();
-  console.log(geoData.body.features);
-  res.send('ok');
+  res.send(geoData.body.features[0].geometry.coordinates);
   // const campground = new Campground(req.body.campground);
   // campground.geometry = geoData.body.features[0].geometry;
   // campground.images = req.files.map((f) => ({
