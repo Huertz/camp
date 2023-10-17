@@ -20,10 +20,12 @@ const userRoutes = require('./routes/users');
 const campgroundsRoutes = require('./routes/campgrounds');
 const reviewsRoutes = require('./routes/reviews');
 
+const MongoStore = require('connect-mongodb-session')(session);
+
 //! mongodb
 const dbUrl = process.env.DB_URL;
 // 'mongodb://localhost:27017/camp'
-mongoose.connect(dbUrl, {
+mongoose.connect('mongodb://localhost:27017/camp', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -53,7 +55,19 @@ app.use(methodOverride('_method'));
 //! directrly connects to the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+const store = new MongoStore({
+  url: 'mongodb://localhost:27017/camp',
+  secret: 'supersecret',
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on('error', function (e) {
+  console.log('SESSION STORE ERROR', e);
+});
+
 const sessionConfig = {
+  store,
+  name: 'session',
   secret: 'thisshouldbeabettersecret!',
   resave: false,
   saveUninitialized: true,
