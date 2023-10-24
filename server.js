@@ -23,9 +23,9 @@ const reviewsRoutes = require('./routes/reviews');
 const MongoStore = require('connect-mongodb-session')(session);
 
 //! mongodb
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/camp';
 // 'mongodb://localhost:27017/camp'
-mongoose.connect('mongodb://localhost:27017/camp', {
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -56,7 +56,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const store = new MongoStore({
-  url: 'mongodb://localhost:27017/camp',
+  url: dbUrl,
   secret: 'supersecret',
   touchAfter: 24 * 60 * 60,
 });
