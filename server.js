@@ -55,9 +55,11 @@ app.use(methodOverride('_method'));
 //! directrly connects to the public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
 const store = new MongoStore({
   url: dbUrl,
-  secret: 'supersecret',
+  secret,
   touchAfter: 24 * 60 * 60,
 });
 
@@ -68,7 +70,7 @@ store.on('error', function (e) {
 const sessionConfig = {
   store,
   name: 'session',
-  secret: 'thisshouldbeabettersecret!',
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
